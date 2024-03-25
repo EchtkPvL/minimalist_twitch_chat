@@ -9,7 +9,7 @@ body {
 }
 
 .main {
-    width: 90%;
+    width: 95%;
     margin: 1em auto;
 }
 
@@ -53,11 +53,16 @@ input, textarea, button, p, div, section, article, select {
     color: #fefefe;
 }
 
-#meta {
+#prevmon {
     position: absolute;
-    top: 10px;
+    bottom: 10px;
     right: 20px;
     text-align: right;
+}
+
+#prevmon > iframe {
+    height: 15vh;
+    width: 15vw;
 }
 
 .moderator {

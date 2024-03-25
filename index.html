@@ -6,13 +6,10 @@
     <title>Twitch Chat</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="toggleDarkMode()">
+<body class="dark-mode">
     <div class="main">
-        <div id="meta">
-            <div id="usercount">
-                <img src="assets/icons/account-group.png" width="24" height="24"/>
-                <span>-</span>
-            </div>
+        <div id="prevmon">
+            <iframe src='https://player.twitch.tv/?autoplay=true&channel=jvpeek&muted=true&parent=window.location.hostname' allowfullscreen></iframe>
         </div>
         <div id="msgs"></div>
     </div>

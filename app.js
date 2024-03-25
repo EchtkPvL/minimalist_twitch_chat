@@ -23,8 +23,6 @@ const usersElement = document.querySelector('#users');
 const statusElement = document.querySelector('#status');
 const countElement = document.querySelector('#count');
 
-const userCountElement = document.querySelector('#usercount');
-
 const params = new URLSearchParams(window.location.search);
 const channel = params.get('channel') || 'projektiontv';
 const addhour = Number(params.get('addhours')) || 0;
@@ -40,7 +38,9 @@ const client = new tmi.Client({
 
 client.connect().then(() => {
     console.log(`Listening for messages in ${channel}...`);
-    updateUserCount();
+    let iframe = document.getElementById('prevmon');
+    iframe.innerHTML = '<iframe src="https://player.twitch.tv/?autoplay=true&muted=true&channel='
+        + channel + '&parent=' + window.location.hostname + '" allowfullscreen></iframe>';
 });
 
 let users = {};
@@ -60,11 +60,6 @@ function getRandomColour() {
         color = getRandomColour();
     }
     return color;
-}
-
-function toggleDarkMode() {
-    var element = document.body;
-    element.classList.toggle('dark-mode');
 }
 
 function updateMessageBuffer() {
@@ -175,8 +170,11 @@ client.on('message', (wat, tags, message, self) => {
     const { username } = tags;
     const { badges } = tags;
     const { color } = tags;
-    const { 'display-name': displayName } = tags;
+    var { 'display-name': displayName } = tags;
     let role = "";
+
+    // Fix weird usernames
+    if (username.toLowerCase() != displayName.toLowerCase()) displayName = `${displayName} (${username})`;
 
     // Hide Bot-messages
     if ((username.toLowerCase().endsWith('bot')) && (!username.toLowerCase().endsWith('robot'))) return;
@@ -379,27 +377,3 @@ client.on('raided', (channel, username, viewers) => {
     msgsElement.prepend(container);
     updateMessageBuffer();
 });
-
-// fetch channelinfo and set to userCountElement, update every 30 seconds
-let updateUserCountHandle;
-function updateUserCount() {
-    fetch(`https://projektion-twitch-usercount.herokuapp.com/api/channelinfo?channel=${channel}`)
-        .then((res) => res.json())
-        .then(({ status, viewer_count }) => {
-            if (status === 403) {
-                if (updateUserCountHandle) {
-                    console.log('Clearing Interval');
-                    clearInterval(updateUserCountHandle);
-                    userCountElement.style.display = 'none';
-                }
-            } else {
-                userCountElement.style.display = 'inherit';
-                let valueElement = document.querySelector('#usercount > span');
-                valueElement.textContent = viewer_count;
-            }
-        })
-        .catch((err) => {
-            console.error('Error fetching user count', err);
-        });
-}
-updateUserCountHandle = setInterval(updateUserCount, 30000);
