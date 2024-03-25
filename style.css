@@ -86,3 +86,25 @@ input, textarea, button, p, div, section, article, select {
     padding-left: 2rem;
     margin-right: 0.5rem;
 }
+
+.broadcaster {
+    color: rgb(255,255,255);
+    background: url("assets/icons/broadcaster.svg") rgb(233, 27, 24);
+    background-size: 1.6rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.2rem;
+    padding-left: 2rem;
+    margin-right: 0.5rem;
+}
+
+.partner {
+    color: rgb(255,255,255);
+    background: url("assets/icons/partner.svg") rgb(169, 112, 255);
+    background-size: 1.6rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.2rem;
+    padding-left: 2rem;
+    margin-right: 0.5rem;
+}

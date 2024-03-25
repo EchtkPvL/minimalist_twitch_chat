@@ -1,4 +1,40 @@
-Very simple twitch chat is read only. It displays time, username in colour and the message. The latest message is on top allways. The number of messages displayed is limited to 30 messages. Use ```?channel=channelname``` to set the channel that should be listend to. It is also possible to correct the timezone by adding ```addhours=0``` to the URL. The chat also supports emotes.
+# Minimalist Twitch chat
+Very simple twitch chat is read only. It displays time, username in colour and the message. The latest message is on top allways. The number of messages displayed is limited to 200 messages. The chat also supports emotes (currently only from Twitch).
 
-Example to listen to the twitch chat of [ProjektionTV](https://twitch.tv/projektiontv)  
-[https://projektiontv-codequatsch.github.io/minimalist_twitch_chat/?channel=projektiontv&addhours=0](https://projektiontv-codequatsch.github.io/minimalist_twitch_chat/?channel=projektiontv&addhours=0)
+## Settings
+This chat can be configured through URL parameters.
+
+### Channel
+`channel=<NAME>`
+
+| Parameter | `channel` |
+| --- | --- |
+| Expectation | Username of Twitch channel |
+| Default | `jvpeek` |
+| Warning | Programm will **not** throw an error on wrong input |
+
+### Max messages
+`maxlines=<NUMBER>`
+
+| Parameter | `maxlines` |
+| --- | --- |
+| Expectation | Max messages to be shown |
+| Default  | `200` |
+
+### Time difference
+`addhours=<NUMBER>`
+
+| Parameter | `addhours` |
+| --- | --- |
+| Expectation | Hours |
+| Default | `0` |
+| Note | Use this for timezone correction. |
+
+### Example
+`https://echtkpvl.github.io/minimalist_twitch_chat/?channel=echtkpvl`
+
+---
+## Credits
+[ProjektionTV](https://twitch.tv/projektiontv)
+
+https://github.com/ProjektionTV-Codequatsch/minimalist_twitch_chat

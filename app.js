@@ -24,7 +24,7 @@ const statusElement = document.querySelector('#status');
 const countElement = document.querySelector('#count');
 
 const params = new URLSearchParams(window.location.search);
-const channel = params.get('channel') || 'projektiontv';
+const channel = params.get('channel') || 'jvpeek';
 const addhour = Number(params.get('addhours')) || 0;
 const maxlines = Number(params.get('maxlines')) || 200;
 
@@ -38,6 +38,13 @@ const client = new tmi.Client({
 
 client.connect().then(() => {
     console.log(`Listening for messages in ${channel}...`);
+    document.title = `${channel} chat`;
+
+    var strMessage = `Start listening for messages in ${channel}`;
+    var container = createEventContainer('', strMessage);
+    msgsElement.prepend(container);
+    updateMessageBuffer();
+
     let iframe = document.getElementById('prevmon');
     iframe.innerHTML = '<iframe src="https://player.twitch.tv/?autoplay=true&muted=true&channel='
         + channel + '&parent=' + window.location.hostname + '" allowfullscreen></iframe>';
@@ -106,13 +113,19 @@ function createTimeElement() {
 function createUserElement(username, displayName, colour, role) {
     let containerUser;
 
-    if (role == "moderator") {
+    if (role == "broadcaster") {
+        containerUser = createUnsafeSpanElement("<span class='broadcaster'></span>" + displayName);
+        containerUser.style.color = getUserColour(username, colour);
+    } else if (role == "moderator") {
         containerUser = createUnsafeSpanElement("<span class='moderator'></span>" + displayName);
         containerUser.style.color = getUserColour(username, colour);
     } else if (role == "vip") {
         containerUser = createUnsafeSpanElement("<span class='vip'></span>" + displayName);
         containerUser.style.color = getUserColour(username, colour);
-    } else {
+    } else if (role == "partner") {
+        containerUser = createUnsafeSpanElement("<span class='partner'></span>" + displayName);
+        containerUser.style.color = getUserColour(username, colour);
+    } else  {
         containerUser = createSpanElement(displayName);
         containerUser.style.color = getUserColour(username, colour);
     }
@@ -193,6 +206,8 @@ client.on('message', (wat, tags, message, self) => {
     let containerTime = createTimeElement();
 
     // Username
+    if (badges !== null && typeof badges.partner !== 'undefined' && badges.partner == 1) role = "partner";
+    if (badges !== null && typeof badges.broadcaster !== 'undefined' && badges.broadcaster == 1) role = "broadcaster";
     if (badges !== null && typeof badges.moderator !== 'undefined' && badges.moderator == 1) role = "moderator";
     if (badges !== null && typeof badges.vip !== 'undefined' && badges.vip == 1) role = "vip";
     let containerUser = createUserElement(username, displayName, color, role);
